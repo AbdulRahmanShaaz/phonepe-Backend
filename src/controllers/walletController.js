@@ -2,7 +2,6 @@ const User = require("../models/user");
 const Transaction = require("../models/Transaction");
 const bcrypt = require("bcryptjs");
 
-
 const addMoney = async (req, res) => {
     try {
         const { amount, mpin } = req.body;
@@ -14,7 +13,7 @@ const addMoney = async (req, res) => {
             });
         }
 
-        if (amount <= 0) {
+        if (Number(amount) <= 0) {
             return res.status(400).json({
                 message: "Amount must be greater than 0",
             });
@@ -34,7 +33,10 @@ const addMoney = async (req, res) => {
             });
         }
 
-        const isMpinValid = await bcrypt.compare(mpin, user.MPIN);
+        const isMpinValid = await bcrypt.compare(
+            mpin,
+            user.MPIN
+        );
 
         if (!isMpinValid) {
             return res.status(401).json({
@@ -49,7 +51,7 @@ const addMoney = async (req, res) => {
         const transaction = await Transaction.create({
             sender: user._id,
             receiver: user._id,
-            amount,
+            amount: Number(amount),
             types: "ADD-MONEY",
             status: "completed",
         });
@@ -62,18 +64,14 @@ const addMoney = async (req, res) => {
 
     } catch (error) {
         console.error("Error adding money:", error);
+
         return res.status(500).json({
             message: "Server Error",
         });
     }
 };
-
-// =======================
-// Pay Bill
-// =======================
 const payBill = async (req, res) => {
     try {
-
         const { billerName, amount, mpin } = req.body;
         const userId = req.user._id;
 
@@ -83,7 +81,7 @@ const payBill = async (req, res) => {
             });
         }
 
-        if (amount <= 0) {
+        if (Number(amount) <= 0) {
             return res.status(400).json({
                 message: "Amount must be greater than 0",
             });
@@ -103,7 +101,10 @@ const payBill = async (req, res) => {
             });
         }
 
-        const isMpinValid = await bcrypt.compare(mpin, user.MPIN);
+        const isMpinValid = await bcrypt.compare(
+            mpin,
+            user.MPIN
+        );
 
         if (!isMpinValid) {
             return res.status(401).json({
@@ -111,7 +112,7 @@ const payBill = async (req, res) => {
             });
         }
 
-        if (user.balance < amount) {
+        if (user.balance < Number(amount)) {
             return res.status(400).json({
                 message: "Insufficient balance",
             });
@@ -124,7 +125,7 @@ const payBill = async (req, res) => {
         const transaction = await Transaction.create({
             sender: user._id,
             receiver: user._id,
-            amount,
+            amount: Number(amount),
             billerName,
             types: "BillPayment",
             status: "completed",

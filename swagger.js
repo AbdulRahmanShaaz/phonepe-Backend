@@ -3,10 +3,18 @@ const swaggerAutogen = require("swagger-autogen")();
 const doc = {
     info: {
         title: "PhonePe Backend API",
-        description: "API documentation for the PhonePe backend"
+        description: "API documentation for the PhonePe Backend"
     },
-    host: "localhost:3000",
-    schemes: ["http"]
+    host: "localhost:5000",
+    schemes: ["http"],
+    securityDefinitions: {
+        BearerAuth: {
+            type: "apiKey",
+            in: "header",
+            name: "Authorization",
+            description: "Enter your JWT token as: Bearer <token>"
+        }
+    }
 };
 
 const outputFile = "./swagger-output.json";
