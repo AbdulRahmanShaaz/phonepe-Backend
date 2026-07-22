@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
     {
         name: {
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema(
         },
         MPIN: {
             type: String,
-            unique: true,
+            default: null,
         },
     },
     {
