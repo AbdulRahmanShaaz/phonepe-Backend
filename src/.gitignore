@@ -1,4 +1,4 @@
-node_modules
+node_modules/
 .env
 swagger-output.json
 package-lock.json
