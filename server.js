@@ -32,14 +32,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* ------------------------- */
-/*      DATABASE CONNECT     */
-/* ------------------------- */
 
 connectDB();
 
-/* ------------------------- */
-/*        SWAGGER DOCS       */
-/* ------------------------- */
 
 app.use(
     "/api-docs",
@@ -50,14 +45,7 @@ app.use(
     })
 );
 
-/*  #swagger.tags = ['Health']
-    #swagger.summary = 'Health Check'
-    #swagger.description = 'Checks whether the backend server is running.'
 
-    #swagger.responses[200] = {
-        description: 'Server is running successfully.'
-    }
-*/
 app.get("/health", (req, res) => {
     return res.status(200).json({
         success: true,
